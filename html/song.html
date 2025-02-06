@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>After Rain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--bg-image) no-repeat center center/cover;
+            overflow: hidden;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-image) no-repeat center center/cover;
+            filter: blur(10px);
+            z-index: -1;
+            overflow: hidden;
+        }
+        .container {
+            position: relative;
+            width: 900px;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .circle {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            border: 15px solid #9141ac;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 3;
+        }
+        .circle-inner {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            border: 5px solid white;
+            z-index: 3;
+        }
+        .content {
+            position: absolute;
+            bottom: 50px;
+            width: 600px;
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            border-radius: 5px;
+            z-index: 4;
+            clip-path: polygon(12% 0%, 22% 100%, 78% 100%, 88% 0%);
+        }
+        .song-title {
+            white-space: nowrap;
+            mask-image: linear-gradient(to right, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+            -webkit-mask-image: linear-gradient(to right, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+        }
+        .image {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: var(--bg-image) no-repeat center center/cover;
+            z-index: 2;
+        }
+        .side-box {
+            position: absolute;
+            width: 250px;
+            height: 100%;
+            background: rgba(100, 100, 100, 0.5);
+            border-radius: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px;
+            z-index: 2;
+        }
+        .left-box {
+            left: -120px;
+        }
+        .right-box {
+            right: -120px;
+        }
+        .side-box div {
+            width: 80%;
+            border-radius: 8px;
+            line-height: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            padding: 25px;
+            color: white;
+        }
+        footer {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            padding: 20px 0;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        .I-level {
+            color: rgb(5, 176, 5);
+        }
+        .II-level {
+            color: rgb(15, 80, 219);
+        }
+        .III-level {
+            color: rgb(255, 208, 22);
+        }
+        .IV-level {
+            color: rgb(107, 24, 179);
+        }
+        .IV_Alpha-level {
+            color: rgb(150, 43, 244);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="side-box left-box" id="left-box">
+            <div id="I">
+                <span id="I-level" class="I-level">Lv.0</span><br>
+                <span id="I-rating">Rating: 0</span><br>
+                <span id="I-score">Score: 0</span><br>
+                <span id="I-flag">Flag: NONE</span><br>
+                <span id="I-next">Next: 0</span>
+            </div>
+            <div id="II" >
+                <span id="II-level" class="II-level">Lv.0</span><br>
+                <span id="II-rating">Rating: 0</span><br>
+                <span id="II-score">Score: 0</span><br>
+                <span id="II-flag">Flag: NONE</span><br>
+                <span id="II-next">Next: 0</span>
+            </div>
+        </div>
+        <div class="side-box right-box" id="right-box">
+            <div id="IV" >
+                <span id="IV-level"  class="IV-level">Lv.0</span><br>
+                <span id="IV-rating">Rating: 0</span><br>
+                <span id="IV-score">Score: 0</span><br>
+                <span id="IV-flag">Flag: NONE</span><br>
+                <span id="IV-next">Next: 0</span>
+            </div>
+        </div>
+        <div class="circle"></div>
+        <div class="circle-inner"></div>
+        <div class="image">
+            <div class="content">
+                <span id="song-title">Title</span><br>
+                <span id="song-artist">Artist</span><br>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>图片资源来源: Dream Engine Games</p>
+        <p>歌曲信息模板: None1145 / Terlity</p> 
+        <p>歌曲信息提供: o.O 人力统计(VSCode能不能自动填啊)</p>
+    </footer>
+
+    <script>
+        const imgp = "../img"
+        function setCardBackground(data) {
+            document.documentElement.style.setProperty("--bg-image", `url('${imgp}/source/${data.songID}.png')`);
+
+            const songTitleElement = document.getElementById('song-title');
+            const songArtistElement = document.getElementById('song-artist');
+            const songIDElement = document.getElementById('song-id');
+            const songData = data.songData;
+
+            songTitleElement.textContent = data.songName;
+            songArtistElement.textContent = `Artist: ${data.songArtist}`;
+
+            if ("IV_Alpha" in songData) {
+                document.getElementById('left-box').innerHTML = `
+                    ${document.getElementById('left-box').innerHTML}
+                    <div id="III" >
+                        <span id="III-level"  class="III-level">Lv.0</span><br>
+                        <span id="III-rating">Rating: 0</span><br>
+                        <span id="III-score">Score: 0</span><br>
+                        <span id="III-flag">Flag: NONE</span><br>
+                        <span id="III-next">Next: 0</span>
+                    </div>
+                `
+                document.getElementById('right-box').innerHTML = `
+                    ${document.getElementById('right-box').innerHTML}
+                    <div id="IV_Alpha" >
+                        <span id="IV_Alpha-level"  class="IV_Alpha-level">Lv.0</span><br>
+                        <span id="IV_Alpha-rating">Rating: 0</span><br>
+                        <span id="IV_Alpha-score">Score: 0</span><br>
+                        <span id="IV_Alpha-flag">Flag: NONE</span><br>
+                        <span id="IV_Alpha-next">Next: 0</span>
+                    </div>
+                `
+            } else {
+                document.getElementById('right-box').innerHTML = `
+                    <div id="III" >
+                        <span id="III-level"  class="III-level">Lv.0</span><br>
+                        <span id="III-rating">Rating: 0</span><br>
+                        <span id="III-score">Score: 0</span><br>
+                        <span id="III-flag">Flag: NONE</span><br>
+                        <span id="III-next">Next: 0</span>
+                    </div>
+                    ${document.getElementById('right-box').innerHTML}
+                `
+            }
+
+            Object.keys(songData).forEach(level => {
+                const levelData = songData[level].songData;
+                document.getElementById(`${level}-level`).textContent = `Lv.${levelData.level}`;
+                document.getElementById(`${level}-rating`).textContent = `Rating: ${(+levelData.sourceRating).toFixed(4)}`;
+                document.getElementById(`${level}-score`).textContent = `Score: ${levelData.score}`;
+                document.getElementById(`${level}-flag`).textContent = `Flag: ${levelData.songStaus.replace('APP', 'AP+')}`;
+                document.getElementById(`${level}-next`).textContent = `Next: +${levelData.nextPointScore}`;
+            });
+        }
+
+        const data = /{{{data}}}/
+
+        document.addEventListener('DOMContentLoaded', () => setCardBackground(data[0]));
+    </script>
+</body>
+</html>

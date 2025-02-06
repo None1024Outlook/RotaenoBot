@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --card-width: 1100px; /* Default width for the card */
+            --card-height: 500px; /* Default height for the card */
+            --bar-height: 30%; /* Height of the translucent bar */
+            --border: 10px; /* Border radius for card and bar */
+        }
+
+        body {
+            background-color: #2b2d42;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Ensure body takes full viewport height */
+            display: flex; /* Center content using flexbox */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Hide scrollbars */
+            box-sizing: border-box; /* Account for padding in element dimensions */
+        }
+
+        /* .player {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .player img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            padding: 20px;
+        }
+        .player span {
+            font-size: 20px;
+            font-weight: bold;
+            padding: -10px;
+        } */
+
+        .floating-card {
+            background-color: white;
+            color: #2b2d42;
+            padding: 20px;
+            border-radius: var(--border);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: var(--card-width);
+            height: var(--card-height);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden; /* Prevent any overflow from the card */
+        }
+
+        .floating-card::after {
+            content: '';
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: var(--bar-height);
+            /* background: rgba(255, 255, 255, 0.5); */
+            /* backdrop-filter: blur(10px); */
+            /* border-radius: 0 0 var(--border) var(--border); */
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .song-title {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        span {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: bold;
+        }
+
+        .blur-bar {
+            border-radius: var(--border) var(--border) 0 0;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 10px;
+            width: 94.8%;
+            height: 20%;
+            display: flex;
+            align-items: center;
+            bottom: 0;
+        }
+
+        .content {
+            display: flex;
+            width: 100%;
+        }
+
+        .content div {
+            flex: 1;
+            padding: 4.3%;
+        }
+
+        .content span {
+            font-size: 15px;
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            padding: 20px 0;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="player" id="player"></div> -->
+    <div class="floating-card" id="card">
+        <h2 id="song-title" class="song-title">Loading...</h2>
+        <span id="song-artist"></span>
+        <br>
+        <span id="song-id"></span>
+        <div class="blur-bar">
+            <div class="content">
+                <div>
+                    <span id="I-level">Lv.0</span>
+                    <br>
+                    <span id="I-rating">Rating: 0</span>
+                    <br>
+                    <span id="I-score">Score: 0</span>
+                    <br>
+                    <span id="I-flag">Flag: NONE</span>
+                    <br>
+                    <span id="I-next">Next: 0</span>
+                </div>
+                <div>
+                    <span id="II-level">Lv.0</span>
+                    <br>
+                    <span id="II-rating">Rating: 0</span>
+                    <br>
+                    <span id="II-score">Score: 0</span>
+                    <br>
+                    <span id="II-flag">Flag: NONE</span>
+                    <br>
+                    <span id="II-next">Next: 0</span>
+                </div>
+                <div>
+                    <span id="III-level">Lv.0</span>
+                    <br>
+                    <span id="III-rating">Rating: 0</span>
+                    <br>
+                    <span id="III-score">Score: 0</span>
+                    <br>
+                    <span id="III-flag">Flag: NONE</span>
+                    <br>
+                    <span id="III-next">Next: 0</span>
+                </div>
+                <div>
+                    <span id="IV-level">Lv.0</span>
+                    <br>
+                    <span id="IV-rating">Rating: 0</span>
+                    <br>
+                    <span id="IV-score">Score: 0</span>
+                    <br>
+                    <span id="IV-flag">Flag: NONE</span>
+                    <br>
+                    <span id="IV-next">Next: 0</span>
+                </div>
+                <div>
+                    <span id="IV_Alpha-level">Lv.0</span>
+                    <br>
+                    <span id="IV_Alpha-rating">Rating: 0</span>
+                    <br>
+                    <span id="IV_Alpha-score">Score: 0</span>
+                    <br>
+                    <span id="IV_Alpha-flag">Flag: NONE</span>
+                    <br>
+                    <span id="IV_Alpha-next">Next: 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; Dream Engine Games. All Rights Reserved.</p>
+        <p>歌曲信息生成模板: None1145. All Rights Reserved.</p> 
+        <p>歌曲信息生成提供: o.O 人力统计(Excel能不能自动填啊)</p> 
+    </footer>
+
+    <script>
+        const imgp = "../img"
+        // Function to dynamically set the content of the card based on JSON data
+        function setCardBackground(data) {
+            const cardElement = document.getElementById('card');
+            const songTitleElement = document.getElementById('song-title');
+            const songArtistElement = document.getElementById('song-artist');
+            const songIDElement = document.getElementById('song-id');
+            const songData = data.songData;
+
+            // Set card background
+            cardElement.style.backgroundImage = `url('${imgp}/source/${data.songID}.png')`;
+            songTitleElement.textContent = data.songName;
+            songArtistElement.textContent = `Artist: ${data.songArtist}`;
+            songIDElement.textContent = `ID: ${data.songID}`;
+
+            // Iterate over song data levels and update the spans
+            Object.keys(songData).forEach(level => {
+                const levelData = songData[level].songData;
+                document.getElementById(`${level}-level`).textContent = `Lv.${levelData.level}`;
+                document.getElementById(`${level}-rating`).textContent = `Rating: ${(+levelData.sourceRating).toFixed(4)}`;
+                document.getElementById(`${level}-score`).textContent = `Score: ${levelData.score}`;
+                document.getElementById(`${level}-flag`).textContent = `Flag: ${levelData.songStaus}`;
+                document.getElementById(`${level}-next`).textContent = `Next: ${levelData.nextPointScore}`;
+            });
+        }
+
+        // Example data loading - to be replaced by actual data
+        const data = /{{{data}}}/
+        // const playerData = data[1];
+        // const player = document.getElementById('player');
+        // player.innerHTML = `
+        //     <img src="${imgp}/avatar/player.jpg" alt="Player Avatar">
+        //     <span>${playerData.playerName} (${(+playerData.playerRating).toFixed(4)})</span>
+        // `;
+
+        document.addEventListener('DOMContentLoaded', () => setCardBackground(data[0]));
+    </script>
+</body>
+</html>

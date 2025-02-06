@@ -1,0 +1,4 @@
+tmp/
+__pycache__/
+1.json
+users.json

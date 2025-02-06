@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #2b2d42;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .player {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .player img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        .player span {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .content {
+            display: grid;
+            max-width: 1220px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .card {
+            position: relative;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            height: 110px;
+        }
+
+        .card-number {
+            position: absolute;
+            top: 8px;
+            right: 0px;
+            color: rgba(255, 255, 255, 0.847);
+            font-weight: bold;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 999;
+        }
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(2px) brightness(0.8);
+        }
+        .card-body {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            max-width: 85%;
+            max-height: 20px;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            mask-image: linear-gradient(to right, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+            -webkit-mask-image: linear-gradient(to right, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+        }
+        .card-text {
+            display: flex;
+            justify-content: space-between;
+        }
+        .card-text span {
+            font-size: 12px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            padding: 20px 0;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="player" id="player"></div>
+<div class="content" id="content"></div>
+<footer>
+    <p>图片资源来源: Dream Engine Games</p>
+    <p>Best40模板: None1145 / Terlity</p> 
+    <p>Best提供: o.O 人力统计(VSCode能不能自动填啊)</p> 
+</footer>
+
+
+<script>
+    const imgp = "../img"
+    const data = /{{{data}}}/
+    const playerData = data[1];
+    const player = document.getElementById('player');
+    player.innerHTML = `
+        <img src="${imgp}/avatar/player.jpg" alt="Player Avatar">
+        <span>${playerData.playerName} (${(+playerData.playerRating).toFixed(4)})</span>
+    `;
+    const filteredData = data[0].sort((a, b) => b.rating - a.rating)
+                                .slice(0, 40);
+    populateCards(filteredData);
+
+    function createCard(cardData, index) {
+        return `
+            <div class="card">
+                <div class="card-number">#${index + 1}</div>
+                <img src="${imgp}/thumb/${cardData.songID}.jpg" alt="${cardData.songID}">
+                <div class="card-body">
+                    <span class="card-title">${cardData.songName}</span>
+                    <div class="card-text">
+                        <span>
+                            Rating: ${(+cardData.rating).toFixed(4)}<br>
+                            Level: ${cardData.level}<br>
+                            Score: ${cardData.score}<br>
+                        </span>
+                        <span>
+                            Next: +${cardData.nextPointScore}<br>
+                            Cleared: ${cardData.isCleared}<br>
+                            Flag: ${cardData.songStaus.replace('APP', 'AP+')}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function populateCards(cardsData) {
+        document.getElementById('content').innerHTML = cardsData.map((cardData, index) => createCard(cardData, index)).join('');
+    }
+
+</script>
+
+</body>
+</html>
